@@ -13,6 +13,10 @@ playAds = "23.6.0"
 multiDex = "2.0.1"
 userMessaging = "3.1.0"
 constraintlayout = "2.2.0"
+camera = "1.4.1"
+mlKit = "17.1.0"
+guava = "32.0.1-android"
+appcompat = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,11 +33,18 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 playAds = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playAds" }
 userMessaging = { group = "com.google.android.ump", name = "user-messaging-platform", version.ref = "userMessaging" }
 multiDex = { group = "androidx.multidex", name = "multidex", version.ref = "multiDex" }
+mlKit = { group = "com.google.android.gms", name = "play-services-mlkit-face-detection", version.ref = "mlKit" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

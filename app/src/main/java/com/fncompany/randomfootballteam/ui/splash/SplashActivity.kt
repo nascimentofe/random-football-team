@@ -1,4 +1,4 @@
-package com.fncompany.randomfootballteam.splash
+package com.fncompany.randomfootballteam.ui.splash
 
 import android.app.Activity
 import android.content.Intent
@@ -121,6 +121,7 @@ class SplashActivity : Activity() {
 
   /** Start the MainActivity. */
   fun startMainActivity() {
+    finishActivity(0)
     val intent = Intent(this, MainActivity::class.java)
     startActivity(intent)
   }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Random Football Team</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="main_activity_text">This is the main activity text.</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="ad_inspector">Ad Inspector</string>
 </resources>
