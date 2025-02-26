@@ -1,9 +1,11 @@
-name: Android CI
+name: "[DEV] Build & Publish snapshot"
+
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+    branches:
+      - 'develop'
+      - '**/epic'
+
 jobs:
   build:
     runs-on: ubuntu-latest
