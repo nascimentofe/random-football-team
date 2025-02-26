@@ -11,7 +11,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
 import com.fncompany.randomfootballteam.ads.GoogleMobileAdsConsentManager
-import com.fncompany.randomfootballteam.ads.OnShowAdCompleteListener
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -79,7 +78,7 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
-                        Log.d(App.LOG_TAG, "onAdLoaded.")
+                        Log.d(LOG_TAG, "onAdLoaded.")
                         Toast.makeText(context, "onAdLoaded", Toast.LENGTH_SHORT).show()
                     }
 
@@ -90,7 +89,7 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
                      */
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         isLoadingAd = false
-                        Log.d(App.LOG_TAG, "onAdFailedToLoad: " + loadAdError.message)
+                        Log.d(LOG_TAG, "onAdFailedToLoad: " + loadAdError.message)
                         Toast.makeText(context, "onAdFailedToLoad", Toast.LENGTH_SHORT).show()
                     }
                 },
@@ -119,12 +118,10 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
          */
         fun showAdIfAvailable(activity: Activity) {
             showAdIfAvailable(
-                activity,
-                object : OnShowAdCompleteListener {
-                    override fun onShowAdComplete() {
-                        // Empty because the user will go back to the activity that shows the ad.
-                    }
-                },
+                activity = activity,
+                onShowAdCompleteListener = {
+                    // Empty because the user will go back to the activity that shows the ad.
+                }
             )
         }
 
@@ -134,24 +131,24 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
          * @param activity the activity that shows the app open ad
          * @param onShowAdCompleteListener the listener to be notified when an app open ad is complete
          */
-        fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
+        fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: () -> Unit) {
             // If the app open ad is already showing, do not show the ad again.
             if (isShowingAd) {
-                Log.d(App.LOG_TAG, "The app open ad is already showing.")
+                Log.d(LOG_TAG, "The app open ad is already showing.")
                 return
             }
 
             // If the app open ad is not available yet, invoke the callback.
             if (!isAdAvailable()) {
-                Log.d(App.LOG_TAG, "The app open ad is not ready yet.")
-                onShowAdCompleteListener.onShowAdComplete()
+                Log.d(LOG_TAG, "The app open ad is not ready yet.")
+                onShowAdCompleteListener.invoke()
                 if (googleMobileAdsConsentManager.canRequestAds) {
                     loadAd(activity)
                 }
                 return
             }
 
-            Log.d(App.LOG_TAG, "Will show ad.")
+            Log.d(LOG_TAG, "Will show ad.")
 
             appOpenAd?.fullScreenContentCallback =
                 object : FullScreenContentCallback() {
@@ -160,11 +157,11 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
                         // Set the reference to null so isAdAvailable() returns false.
                         appOpenAd = null
                         isShowingAd = false
-                        Log.d(App.LOG_TAG, "onAdDismissedFullScreenContent.")
+                        Log.d(LOG_TAG, "onAdDismissedFullScreenContent.")
                         Toast.makeText(activity, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
                             .show()
 
-                        onShowAdCompleteListener.onShowAdComplete()
+                        onShowAdCompleteListener.invoke()
                         if (googleMobileAdsConsentManager.canRequestAds) {
                             loadAd(activity)
                         }
@@ -174,14 +171,14 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
                     override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                         appOpenAd = null
                         isShowingAd = false
-                        Log.d(App.LOG_TAG, "onAdFailedToShowFullScreenContent: " + adError.message)
+                        Log.d(LOG_TAG, "onAdFailedToShowFullScreenContent: " + adError.message)
                         Toast.makeText(
                             activity,
                             "onAdFailedToShowFullScreenContent",
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        onShowAdCompleteListener.onShowAdComplete()
+                        onShowAdCompleteListener.invoke()
                         if (googleMobileAdsConsentManager.canRequestAds) {
                             loadAd(activity)
                         }
@@ -189,7 +186,7 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
 
                     /** Called when fullscreen content is shown. */
                     override fun onAdShowedFullScreenContent() {
-                        Log.d(App.LOG_TAG, "onAdShowedFullScreenContent.")
+                        Log.d(LOG_TAG, "onAdShowedFullScreenContent.")
                         Toast.makeText(activity, "onAdShowedFullScreenContent", Toast.LENGTH_SHORT)
                             .show()
                     }
