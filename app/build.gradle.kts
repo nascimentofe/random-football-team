@@ -72,6 +72,10 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.mlKit)
     implementation(libs.guava)
+    implementation(libs.koin)
+    implementation(libs.koin.core)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
