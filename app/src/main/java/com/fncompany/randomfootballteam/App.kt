@@ -10,13 +10,17 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
-import com.fncompany.randomfootballteam.ads.GoogleMobileAdsConsentManager
+import com.fncompany.randomfootballteam.commons.ads.GoogleMobileAdsConsentManager
+import com.fncompany.randomfootballteam.di.appModule
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import java.util.Date
 
 class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, DefaultLifecycleObserver {
@@ -26,6 +30,10 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
 
     override fun onCreate() {
         super<MultiDexApplication>.onCreate()
+        startKoin {
+            androidContext(this@App)
+            modules(appModule)
+        }
         registerActivityLifecycleCallbacks(this@App)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this@App)
@@ -40,10 +48,16 @@ class App: MultiDexApplication(), Application.ActivityLifecycleCallbacks, Defaul
         }
     }
 
-    inner class AppOpenAdManager {
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        currentActivity?.let {
+            // Show the ad (if available) when the app moves to foreground.
+            appOpenAdManager.showAdIfAvailable(it)
+        }
+    }
 
-        private var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager =
-            GoogleMobileAdsConsentManager.getInstance(applicationContext)
+    inner class AppOpenAdManager {
+        private val googleMobileAdsConsentManager by inject<GoogleMobileAdsConsentManager>()
         private var appOpenAd: AppOpenAd? = null
         private var isLoadingAd = false
         var isShowingAd = false

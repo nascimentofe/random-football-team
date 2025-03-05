@@ -1,4 +1,4 @@
-package com.fncompany.randomfootballteam.ads
+package com.fncompany.randomfootballteam.commons.ads
 
 import android.app.Activity
 import android.content.Context
@@ -15,7 +15,7 @@ import com.google.android.ump.UserMessagingPlatform
  * management platform) as one solution to capture consent for users in GDPR impacted countries.
  * This is an example and you can choose another consent management platform to capture consent.
  */
-class GoogleMobileAdsConsentManager private constructor(context: Context) {
+class GoogleMobileAdsConsentManager(context: Context) {
   private val consentInformation: ConsentInformation =
     UserMessagingPlatform.getConsentInformation(context)
 
@@ -39,8 +39,8 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
    * consent form if necessary.
    */
   fun gatherConsent(
-    activity: Activity,
-    onConsentGatheringCompleteListener: OnConsentGatheringCompleteListener,
+      activity: Activity,
+      onConsentGatheringCompleteListener: OnConsentGatheringCompleteListener,
   ) {
     // For testing purposes, you can force a DebugGeography of EEA or NOT_EEA.
     val debugSettings =
@@ -73,15 +73,5 @@ class GoogleMobileAdsConsentManager private constructor(context: Context) {
     onConsentFormDismissedListener: ConsentForm.OnConsentFormDismissedListener,
   ) {
     UserMessagingPlatform.showPrivacyOptionsForm(activity, onConsentFormDismissedListener)
-  }
-
-  companion object {
-    @Volatile private var instance: GoogleMobileAdsConsentManager? = null
-
-    fun getInstance(context: Context) =
-      instance
-        ?: synchronized(this) {
-          instance ?: GoogleMobileAdsConsentManager(context).also { instance = it }
-        }
   }
 }

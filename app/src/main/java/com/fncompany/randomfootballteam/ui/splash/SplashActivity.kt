@@ -9,18 +9,19 @@ import android.widget.TextView
 import com.fncompany.randomfootballteam.App
 import com.fncompany.randomfootballteam.MainActivity
 import com.fncompany.randomfootballteam.R
-import com.fncompany.randomfootballteam.ads.GoogleMobileAdsConsentManager
+import com.fncompany.randomfootballteam.commons.ads.GoogleMobileAdsConsentManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SplashActivity : Activity() {
 
-    private lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
+    private val googleMobileAdsConsentManager by inject<GoogleMobileAdsConsentManager>()
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)
     private val gatherConsentFinished = AtomicBoolean(false)
     private var secondsRemaining: Long = 0L
@@ -35,8 +36,6 @@ class SplashActivity : Activity() {
         // Create a timer so the SplashActivity will be displayed for a fixed amount of time.
         createTimer()
 
-        googleMobileAdsConsentManager =
-            GoogleMobileAdsConsentManager.getInstance(applicationContext)
         googleMobileAdsConsentManager.gatherConsent(this) { consentError ->
             if (consentError != null) {
                 // Consent not obtained in current session.
