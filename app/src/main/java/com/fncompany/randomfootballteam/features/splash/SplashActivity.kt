@@ -1,11 +1,12 @@
-package com.fncompany.randomfootballteam.ui.splash
+package com.fncompany.randomfootballteam.features.splash
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.fncompany.randomfootballteam.App
 import com.fncompany.randomfootballteam.MainActivity
 import com.fncompany.randomfootballteam.R
@@ -19,7 +20,8 @@ import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-class SplashActivity : Activity() {
+@SuppressLint("CustomSplashScreen")
+class SplashActivity : AppCompatActivity() {
 
     private val googleMobileAdsConsentManager by inject<GoogleMobileAdsConsentManager>()
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)

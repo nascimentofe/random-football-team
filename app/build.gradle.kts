@@ -76,6 +76,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.navigation)
+    implementation(libs.navigation.ui)
+    implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

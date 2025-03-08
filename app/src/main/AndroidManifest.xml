@@ -31,9 +31,8 @@
             android:value="ca-app-pub-5419432822688640~9926195169" />
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".features.splash.SplashActivity"
             android:exported="true"
-            android:noHistory="true"
             android:theme="@style/Theme.RandomFootballTeam">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

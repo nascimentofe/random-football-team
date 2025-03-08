@@ -1,20 +1,18 @@
-package com.fncompany.randomfootballteam.ui.camera
+package com.fncompany.randomfootballteam.features.camera
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import com.fncompany.randomfootballteam.commons.base.BaseFragment
 import com.fncompany.randomfootballteam.commons.camerax.CameraManager
+import com.fncompany.randomfootballteam.commons.utils.Binding
 import com.fncompany.randomfootballteam.databinding.FragmentCameraBinding
 
-class CameraFragment : Fragment() {
+@Binding(FragmentCameraBinding::class)
+class CameraFragment : BaseFragment<FragmentCameraBinding>() {
 
-    private lateinit var binding: FragmentCameraBinding
     private lateinit var cameraManager: CameraManager
     private var isCameraPermissionGranted = false
 
@@ -24,20 +22,16 @@ class CameraFragment : Fragment() {
                 isCameraPermissionGranted = true
                 cameraManager.startCamera()
             } else {
-                // Permissão negada
+                // voltar ao frag anterior
+                Toast.makeText(
+                    requireContext(),
+                    "Forneça permissão de CAMERA para continuar",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCameraBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setup() {
         createCameraManager()
         checkCameraPermission()
     }
